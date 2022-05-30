@@ -12,11 +12,15 @@ function ScrambleNum() {
     const [RandomNum5, setRandomNum5] = useState();
     const [RandomNum6, setRandomNum6] = useState();
     const [RandomNum7, setRandomNum7] = useState();
-    const [RandomNum8, setRandomNum8] = useState(); 
+    const [RandomNum8, setRandomNum8] = useState();
     const [RandomNum9, setRandomNum9] = useState();
     const [chance, setChance] = useState(5);
     const [playAgain, setplayAgain] = useState(false);
     const [count, setCount] = useState(0);
+    const [minRange, setMinRange] = useState(0);
+    const [maxRange, setMaxRange] = useState(10);
+    const [win,setWin] = useState(null);
+    let x;
 
 
     const getRandomNumber = () => {
@@ -24,7 +28,22 @@ function ScrambleNum() {
         setChance(chance - 1);
         setCount(count + 1);
         setplayAgain(false);
-        return (Math.floor(Math.random() * (5 - 1) + 1));
+        x = (Math.floor(Math.random() * (maxRange - minRange) + minRange));
+        if (x > insertNum) {
+            setMaxRange(x)
+            return x;
+        }
+        else if (x < insertNum) {
+            setMinRange(x)
+            return x;
+        }
+        else if (x === insertNum) {
+
+            setWin(x);
+            return x;
+        }
+
+
     };
     const handlePlayagain = () => {
         setplayAgain(true);
@@ -38,83 +57,22 @@ function ScrambleNum() {
         setRandomNum8("");
         setRandomNum9("");
         setChance(5);
-        setInsertNum(5)
-        setCount(0)
+        setInsertNum(5);
+        setCount(0);
+        setMinRange(0);
+        setMaxRange(10);
     }
 
     const handleWinLoss = () => {
 
-        if (insertNum === RandomNum1) {
+        if (win === insertNum) {
             return (
                 <h4 style={{ color: "green" }}>
                     Congratulation you attempt in {count} try
                 </h4>
             );
         }
-        else if (insertNum === RandomNum2) {
-            return (
-                <h4 style={{ color: "green" }}>
-                    Congratulation you attempt in {count} try
-                </h4>
-            );
-
-        }
-        else if (insertNum === RandomNum3) {
-            return (
-                <h4 style={{ color: "green" }}>
-                    Congratulation you attempt {count} try
-                </h4>
-            );
-
-        }
-        else if (insertNum === RandomNum4) {
-            return (
-                <h4 style={{ color: "green" }}>
-                    Congratulation you attempt {count} try
-                </h4>
-            );
-
-        }
-        else if (insertNum === RandomNum5) {
-            return (
-                <h4 style={{ color: "green" }}>
-                    Congratulation you attempt {count} try
-                </h4>
-            );
-
-        }
-        else if (insertNum === RandomNum6) {
-            return (
-                <h4 style={{ color: "green" }}>
-                    Congratulation your attempt {count} try
-                </h4>
-            );
-
-        }
-        else if (insertNum === RandomNum7) {
-            return (
-                <h4 style={{ color: "green" }}>
-                    Congratulation your attempt {count} try
-                </h4>
-            );
-
-        }
-        else if (insertNum === RandomNum8) {
-            return (
-                <h4 style={{ color: "green" }}>
-                    Congratulation your attempt {count} try
-                </h4>
-            );
-
-        }
-        else if (insertNum === RandomNum9) {
-            return (
-                <h4 style={{ color: "green" }}>
-                    Congratulation your attempt {count} try
-                </h4>
-            );
-
-        }
+    
         else if (chance === 0) {
             return (
                 <h4 style={{ color: "red" }}>
@@ -126,32 +84,49 @@ function ScrambleNum() {
 
     }
 
+
     return (
         <div className="container" >
             <h1>Scramble Number Game</h1>
-           <h4 style={{ color: "blue" }}>chance left {chance}</h4> 
+            <h4 style={{ color: "blue" }}>chance left {chance}</h4>
             {playAgain === true ? "" : handleWinLoss()}
             <div className="insert-Num">
                 <input type="number" placeholder="insertanyNum" value={insertNum} onChange={(e) => setInsertNum(parseInt(e.target.value))} />
             </div>
+            <div>
+                <p>Min</p>
+                <input type="number" value={minRange} onChange={(e) => setMinRange(parseInt(e.target.value))} />
+                <br />
+            </div>
+
+            <div>
+                <p>Max</p>
+                <input type="number" value={maxRange} onChange={(e) => setMaxRange(parseInt(e.target.value))} />
+                <br />
+
+            </div>
 
             <div>
                 <div className="btn-group btn-matrix">
-                    <button type="button" className="btn btn-default " style={{ height: "40px", width: "40px" }} onClick={() => setRandomNum1(getRandomNumber())}>{RandomNum1}</button>
-                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px" }} onClick={() => setRandomNum2(getRandomNumber())}>{RandomNum2}</button>
-                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px" }} onClick={() => setRandomNum3(getRandomNumber())}>{RandomNum3}</button><br></br>
-                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px" }} onClick={() => setRandomNum4(getRandomNumber())}>{RandomNum4}</button>
-                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px" }} onClick={() => setRandomNum5(getRandomNumber())}>{RandomNum5}</button>
-                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px" }} onClick={() => setRandomNum6(getRandomNumber())}>{RandomNum6}</button><br></br>
-                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px" }} onClick={() => setRandomNum7(getRandomNumber())}>{RandomNum7}</button>
-                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px" }} onClick={() => setRandomNum8(getRandomNumber())}>{RandomNum8}</button>
-                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px" }} onClick={() => setRandomNum9(getRandomNumber())}>{RandomNum9}</button><br></br>
+                    <div >
+                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px", margin: '10px', backgroundColor: "#33ccff", color: "white" }} disabled={chance === 0} onClick={() => setRandomNum1(getRandomNumber())}><p>{RandomNum1}</p></button>
+                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px", margin: '10px', backgroundColor: "#33ccff", color: "white" }} disabled={chance === 0} onClick={() => setRandomNum2(getRandomNumber())}><p>{RandomNum2}</p></button>
+                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px", margin: '10px', backgroundColor: "#33ccff", color: "white" }} disabled={chance === 0} onClick={() => setRandomNum3(getRandomNumber())}><p>{RandomNum3}</p></button>
+                   <div>
+                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px", margin: '10px', backgroundColor: "#33ccff", color: "white" }} disabled={chance === 0} onClick={() => setRandomNum4(getRandomNumber())}><p>{RandomNum4}</p></button>
+                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px", margin: '10px', backgroundColor: "#33ccff", color: "white" }} disabled={chance === 0} onClick={() => setRandomNum5(getRandomNumber())}><p>{RandomNum5}</p></button>
+                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px" , margin: '10px',backgroundColor: "#33ccff", color: "white" }} disabled={chance === 0} onClick={() => setRandomNum6(getRandomNumber())}><p>{RandomNum6}</p></button>
+                   </div>
 
+                   <div>
+                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px", margin: '10px', backgroundColor: "#33ccff", color: "white"  }} disabled={chance === 0} onClick={() => setRandomNum7(getRandomNumber())}><p>{RandomNum7}</p></button>
+                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px", margin: '10px', backgroundColor: "#33ccff", color: "white" }} disabled={chance === 0} onClick={() => setRandomNum8(getRandomNumber())}><p>{RandomNum8}</p></button>
+                    <button type="button" className="btn btn-default" style={{ height: "40px", width: "40px", margin: '10px', backgroundColor: "#33ccff", color: "white"  }} disabled={chance === 0} onClick={() => setRandomNum9(getRandomNumber())}><p>{RandomNum9}</p></button>
+                   </div>
                     <button onClick={handlePlayagain}> play again </button>
                 </div>
             </div>
-
-
-        </div>
+         </div>
+         </div>
     )
 }
